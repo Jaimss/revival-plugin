@@ -24,6 +24,8 @@ class PlayerDamagePlayerListener(private val plugin: RevivalPlugin) : Listener {
         val material = Material.valueOf(Config.REVIVAL_MATERIAL.get<String>().uppercase())
 
         if (material == player.inventory.itemInMainHand.type) {
+            // cancel damage done
+            isCancelled = true
             // if the player is holding golden apple, revive
             plugin.playerStateManager.setAlive(entity.uniqueId)
             return
