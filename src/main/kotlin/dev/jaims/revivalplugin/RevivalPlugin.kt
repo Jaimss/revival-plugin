@@ -1,20 +1,23 @@
 package dev.jaims.revivalplugin
 
 import dev.jaims.revivalplugin.listener.PlayerDeathListener
-import dev.jaims.revivalplugin.manager.UUIDStateManager
+import dev.jaims.revivalplugin.manager.EffectManager
+import dev.jaims.revivalplugin.manager.PlayerStateManager
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.system.measureTimeMillis
 
 class RevivalPlugin : JavaPlugin() {
 
-    lateinit var playerStateManager: UUIDStateManager
+    lateinit var playerStateManager: PlayerStateManager
+    lateinit var effectManager: EffectManager
 
     override fun onEnable() {
         val millis = measureTimeMillis {
             logger.info("Enabling ${description.fullName}...")
         }
 
-        playerStateManager = UUIDStateManager(this)
+        playerStateManager = PlayerStateManager(this)
+        effectManager = EffectManager()
 
         registerListeners()
 

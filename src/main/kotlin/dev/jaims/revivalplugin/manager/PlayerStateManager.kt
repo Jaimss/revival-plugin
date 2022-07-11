@@ -1,28 +1,55 @@
 package dev.jaims.revivalplugin.manager
 
 import dev.jaims.revivalplugin.RevivalPlugin
-import org.bukkit.Bukkit
-import org.bukkit.entity.Player
+import dev.jaims.revivalplugin.const.PlayerState
+import dev.jaims.revivalplugin.func.bukkitPlayer
+import org.bukkit.GameMode
+import org.bukkit.entity.ArmorStand
 import java.util.*
 
-class UUIDStateManager(private val plugin: RevivalPlugin) {
+class PlayerStateManager(private val plugin: RevivalPlugin) {
 
     init {
         startRevivalTimer()
     }
 
-    private val UUID.bukkitPlayer: Player?
-        get() = Bukkit.getPlayer(this)
-
     private val revivablePlayers: MutableMap<UUID, Long> = mutableMapOf()
     private val deadPlayers: MutableMap<UUID, Long> = mutableMapOf()
 
+    /**
+     * @return the [PlayerState] of [uuid]
+     */
+    fun getState(uuid: UUID): PlayerState {
+        if (uuid in revivablePlayers.keys && uuid in deadPlayers.keys) {
+            error("Player cannot be two states at once!")
+        }
+        return when (uuid) {
+            in revivablePlayers.keys -> PlayerState.REVIVABLE
+            in deadPlayers.keys -> PlayerState.DEAD
+            else -> PlayerState.ALIVE
+        }
+    }
+
+    /**
+     * Set a [uuid] as alive status again if they were revived
+     * ONLY call this if the [uuid] is revivable
+     */
     fun setAlive(uuid: UUID) {
         if (uuid !in revivablePlayers.keys) {
             plugin.logger.severe("Tried to set a player to ALIVE that is not currently revivable or is dead!")
             return
         }
         revivablePlayers.remove(uuid)
+        uuid.bukkitPlayer?.let { player ->
+            // clear effects
+            plugin.effectManager.clear(player)
+            player.gameMode = GameMode.SURVIVAL
+            // remove player from armor stand
+            player.vehicle?.let { stand ->
+                stand.removePassenger(player)
+                stand.remove()
+            }
+        }
     }
 
     /**
@@ -35,18 +62,37 @@ class UUIDStateManager(private val plugin: RevivalPlugin) {
         }
         // add the player to the list of revivable
         revivablePlayers[uuid] = System.currentTimeMillis()
+        // make player ride armor stand and blind him
+        uuid.bukkitPlayer?.let { player ->
+            plugin.effectManager.blind(player)
+            player.gameMode = GameMode.ADVENTURE
+
+            player.location.world?.spawn(player.location, ArmorStand::class.java) { stand ->
+                stand.isInvisible = true
+                stand.addPassenger(player)
+            }
+        }
     }
 
     /**
      * Set a [uuid] to completely dead.
+     * ONLY call if the [uuid] is revivable
      */
-    private fun setDead(uuid: UUID) {
+    fun setDead(uuid: UUID) {
         if (uuid !in revivablePlayers.keys) {
             plugin.logger.severe("Tried to set a player to DEAD that is not currently revivable!")
             return
         }
         revivablePlayers.remove(uuid)
         deadPlayers[uuid] = System.currentTimeMillis()
+        uuid.bukkitPlayer?.let { player ->
+            plugin.effectManager.clear(player)
+            player.gameMode = GameMode.SPECTATOR
+            player.vehicle?.let { stand ->
+                stand.removePassenger(player)
+                stand.remove()
+            }
+        }
     }
 
     private fun startRevivalTimer() {
