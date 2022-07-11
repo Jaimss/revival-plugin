@@ -1,8 +1,6 @@
 package dev.jaims.revivalplugin
 
-import dev.jaims.revivalplugin.listener.EntityMoveListener
-import dev.jaims.revivalplugin.listener.PlayerAnimationEventListener
-import dev.jaims.revivalplugin.listener.PlayerDeathListener
+import dev.jaims.revivalplugin.listener.*
 import dev.jaims.revivalplugin.manager.EffectManager
 import dev.jaims.revivalplugin.manager.PlayerStateManager
 import org.bukkit.plugin.java.JavaPlugin
@@ -36,8 +34,10 @@ class RevivalPlugin : JavaPlugin() {
     private fun registerListeners() {
         with(server.pluginManager) {
             registerEvents(PlayerDeathListener(this@RevivalPlugin), this@RevivalPlugin)
-            registerEvents(PlayerAnimationEventListener(this@RevivalPlugin), this@RevivalPlugin)
             registerEvents(EntityMoveListener(this@RevivalPlugin), this@RevivalPlugin)
+            registerEvents(PlayerDamagePlayerListener(this@RevivalPlugin), this@RevivalPlugin)
+            registerEvents(PlayerInteractEntityListener(this@RevivalPlugin), this@RevivalPlugin)
+            registerEvents(EntityDismountListener(this@RevivalPlugin), this@RevivalPlugin)
         }
     }
 
