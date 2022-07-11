@@ -1,0 +1,3 @@
+name: RevivalPlugin
+main: dev.jaims.revivalplugin.RevivalPlugin
+version: ${version}
