@@ -12,8 +12,8 @@ class EffectManager {
     fun blind(player: Player) = player.addPotionEffect(
         PotionEffect(
             PotionEffectType.BLINDNESS,
-            -1,
-            100,
+            Integer.MAX_VALUE,
+            255,
             true,
             false,
             false,

@@ -45,10 +45,6 @@ class PlayerStateManager(private val plugin: RevivalPlugin) {
             plugin.effectManager.clear(player)
             player.gameMode = GameMode.SURVIVAL
             // remove player from armor stand
-            player.vehicle?.let { stand ->
-                stand.removePassenger(player)
-                stand.remove()
-            }
         }
     }
 
@@ -66,11 +62,6 @@ class PlayerStateManager(private val plugin: RevivalPlugin) {
         uuid.bukkitPlayer?.let { player ->
             plugin.effectManager.blind(player)
             player.gameMode = GameMode.ADVENTURE
-
-            player.location.world?.spawn(player.location, ArmorStand::class.java) { stand ->
-//                stand.isInvisible = true
-                stand.addPassenger(player)
-            }
         }
     }
 
@@ -88,10 +79,6 @@ class PlayerStateManager(private val plugin: RevivalPlugin) {
         uuid.bukkitPlayer?.let { player ->
             plugin.effectManager.clear(player)
             player.gameMode = GameMode.SPECTATOR
-            player.vehicle?.let { stand ->
-                stand.removePassenger(player)
-                stand.remove()
-            }
         }
     }
 
