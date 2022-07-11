@@ -19,12 +19,18 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
+tasks.shadowJar {
+    archiveClassifier.set("")
+}
+
 tasks.processResources {
     with(copySpec {
         from("src/main/resources")
         expand("version" to project.version)
     })
+    duplicatesStrategy = DuplicatesStrategy.WARN
 }
+
 
 tasks.test {
     useJUnitPlatform()
@@ -32,4 +38,8 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
 }

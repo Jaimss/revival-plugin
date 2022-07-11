@@ -17,10 +17,10 @@ class PlayerDeathListener(private val plugin: RevivalPlugin) : Listener {
         // only allow revivable if they are alive
         if (state != PlayerState.ALIVE) return
 
-        plugin.playerStateManager.setRevivable(entity.uniqueId)
         // respawn instantly without death screen
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
             entity.spigot().respawn()
+            plugin.playerStateManager.setRevivable(entity.uniqueId)
         }, 2L)
     }
 

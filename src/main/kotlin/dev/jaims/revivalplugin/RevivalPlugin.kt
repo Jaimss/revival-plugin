@@ -1,5 +1,6 @@
 package dev.jaims.revivalplugin
 
+import dev.jaims.revivalplugin.listener.PlayerAnimationEventListener
 import dev.jaims.revivalplugin.listener.PlayerDeathListener
 import dev.jaims.revivalplugin.manager.EffectManager
 import dev.jaims.revivalplugin.manager.PlayerStateManager
@@ -34,7 +35,7 @@ class RevivalPlugin : JavaPlugin() {
     private fun registerListeners() {
         with(server.pluginManager) {
             registerEvents(PlayerDeathListener(this@RevivalPlugin), this@RevivalPlugin)
-            registerEvents(PlayerDeathListener(this@RevivalPlugin), this@RevivalPlugin)
+            registerEvents(PlayerAnimationEventListener(this@RevivalPlugin), this@RevivalPlugin)
         }
     }
 

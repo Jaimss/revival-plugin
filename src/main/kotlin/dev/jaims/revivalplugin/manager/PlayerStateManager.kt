@@ -68,7 +68,7 @@ class PlayerStateManager(private val plugin: RevivalPlugin) {
             player.gameMode = GameMode.ADVENTURE
 
             player.location.world?.spawn(player.location, ArmorStand::class.java) { stand ->
-                stand.isInvisible = true
+//                stand.isInvisible = true
                 stand.addPassenger(player)
             }
         }
@@ -103,9 +103,7 @@ class PlayerStateManager(private val plugin: RevivalPlugin) {
                 // only take players where the time is greater than
                 .filter { (_, deathTime) -> (currTime - deathTime) / 1000 >= 60 }
                 // move all these people to dead
-                .forEach { (uuid, _) ->
-                    setDead(uuid)
-                }
+                .forEach { (uuid, _) -> setDead(uuid) }
         }, 0, 20L)
     }
 
