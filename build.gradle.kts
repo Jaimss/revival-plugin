@@ -15,12 +15,19 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
+    implementation("net.kyori:adventure-api:4.11.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.1.1")
 
     testImplementation(kotlin("test"))
 }
 
 tasks.shadowJar {
     archiveClassifier.set("")
+
+    // Relocations
+    listOf(
+        "net.kyori"
+    ).forEach { libName -> relocate(libName, "${group}.libs.${libName}") }
 }
 
 tasks.processResources {

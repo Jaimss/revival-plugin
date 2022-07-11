@@ -1,6 +1,7 @@
 package dev.jaims.revivalplugin.listener
 
 import dev.jaims.revivalplugin.RevivalPlugin
+import dev.jaims.revivalplugin.config.Config
 import dev.jaims.revivalplugin.const.PlayerState
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -20,7 +21,9 @@ class PlayerDamagePlayerListener(private val plugin: RevivalPlugin) : Listener {
         val state = plugin.playerStateManager.getState(entity.uniqueId)
         if (state != PlayerState.REVIVABLE) return
 
-        if (Material.GOLDEN_APPLE == player.inventory.itemInMainHand.type) {
+        val material = Material.valueOf(Config.REVIVAL_MATERIAL.get<String>().uppercase())
+
+        if (material == player.inventory.itemInMainHand.type) {
             // if the player is holding golden apple, revive
             plugin.playerStateManager.setAlive(entity.uniqueId)
             return

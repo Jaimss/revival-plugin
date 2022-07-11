@@ -21,7 +21,7 @@ class PlayerDeathListener(private val plugin: RevivalPlugin) : Listener {
         plugin.server.scheduler.scheduleSyncDelayedTask(plugin, {
             entity.spigot().respawn()
             plugin.playerStateManager.setRevivable(entity.uniqueId)
-        }, 2L)
+        }, 0L)
     }
 
 }

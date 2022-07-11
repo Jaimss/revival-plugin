@@ -1,3 +1,10 @@
 name: RevivalPlugin
 main: dev.jaims.revivalplugin.RevivalPlugin
 version: ${version}
+author: Jaimss
+
+commands:
+  reload:
+    description: Reload the plugins config.
+  reset:
+    description: Reset the status of players.

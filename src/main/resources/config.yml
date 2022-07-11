@@ -1,0 +1,40 @@
+general:
+  message:
+    no_permission: "&c(!) No permission!"
+    reload: "&a(!) Reload success!"
+    reset: "&a(!) Successfully reset all dead and revivable players to alive!"
+
+alive:
+  # gamemode while alive
+  gamemode: survival
+  message:
+    revived: "&a(!) You have been revived!"
+
+revival:
+  # the gamemode you are in while revivable
+  gamemode: adventure
+  # time in seconds for someone to get to you for a revival
+  time_to_revive: 60
+  # item that must be in your hand to revive player
+  material: GOLDEN_APPLE
+  # blindness settings
+  blindness:
+    amplifier: 255
+    ambient: true
+    particles: false
+    icon: false
+  # the armor stand y offset. if set to 0, the player will be "sitting" two blocks higher than the position their
+  # feet were when they died. Negative values will move it lower by that many blocks
+  armor_stand_offset_y: -1.0
+  # control the messages
+  message:
+    # {time} will be replaced with the above time_to_revive
+    waiting_for_revival: "&3(!) Waiting for revival for the next &e{time} &3seconds!"
+    expired: "&c(!) Your revival time limit expired."
+
+dead:
+  # the gamemode once dead
+  gamemode: spectator
+  # control the messages
+  message:
+    killed: "&c(!) You have been killed permanently!"

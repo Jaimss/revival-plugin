@@ -1,5 +1,6 @@
 package dev.jaims.revivalplugin.manager
 
+import dev.jaims.revivalplugin.config.Config
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
@@ -13,10 +14,10 @@ class EffectManager {
         PotionEffect(
             PotionEffectType.BLINDNESS,
             Integer.MAX_VALUE,
-            255,
-            true,
-            false,
-            false,
+            Config.REVIVAL_BLINDNESS_AMPLIFIER.get(),
+            Config.REVIVAL_BLINDNESS_AMBIENT.get(),
+            Config.REVIVAL_BLINDNESS_PARTICLES.get(),
+            Config.REVIVAL_BLINDNESS_ICON.get(),
         )
     )
 

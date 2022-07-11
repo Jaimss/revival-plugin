@@ -1,5 +1,7 @@
 package dev.jaims.revivalplugin
 
+import dev.jaims.revivalplugin.command.ReloadCommand
+import dev.jaims.revivalplugin.command.ResetCommand
 import dev.jaims.revivalplugin.listener.*
 import dev.jaims.revivalplugin.manager.EffectManager
 import dev.jaims.revivalplugin.manager.PlayerStateManager
@@ -16,10 +18,13 @@ class RevivalPlugin : JavaPlugin() {
             logger.info("Enabling ${description.fullName}...")
         }
 
+        saveDefaultConfig()
+
         playerStateManager = PlayerStateManager(this)
         effectManager = EffectManager()
 
         registerListeners()
+        registerCommands()
 
         logger.info("Enabled ${description.fullName} in ${millis}ms.")
     }
@@ -28,7 +33,16 @@ class RevivalPlugin : JavaPlugin() {
         val millis = measureTimeMillis {
             logger.info("Disabling ${description.fullName}...")
         }
+
+        // reset before disable
+        playerStateManager.reset()
+
         logger.info("Disabled ${description.fullName} in ${millis}ms.")
+    }
+
+    private fun registerCommands() {
+        getCommand("reload")?.setExecutor(ReloadCommand(this))
+        getCommand("reset")?.setExecutor(ResetCommand(this))
     }
 
     private fun registerListeners() {
